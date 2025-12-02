@@ -6,4 +6,5 @@ class LLMProvider(Enum):
     OPENAI = "openai"
     GOOGLE = "google"
     ANTHROPIC = "anthropic"
+    AZUREOPENAI = "azureopenai"
     CUSTOM = "custom"
