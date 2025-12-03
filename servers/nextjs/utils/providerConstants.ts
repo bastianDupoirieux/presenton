@@ -89,4 +89,9 @@ export const LLM_PROVIDERS: Record<string, LLMProviderOption> = {
     label: "Custom",
     description: "Custom LLM",
   },
+  azureopenai: {
+    value: "azureopenai",
+    label: "AzureOpenAI",
+    description: "OpenAI Models hosted on Azure"
+  },
 }; 
