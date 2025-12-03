@@ -20,9 +20,15 @@ def set_ollama_url_env(value):
 def set_custom_llm_url_env(value):
     os.environ["CUSTOM_LLM_URL"] = value
 
+def set_azureopenai_url_env(value):
+    os.environ["AZUREOPENAI_URL"] = value
+
 
 def set_openai_api_key_env(value):
     os.environ["OPENAI_API_KEY"] = value
+
+def set_azureopenai_api_key_env(value):
+    os.environ["AZUREOPENAI_API_KEY"] = value
 
 
 def set_openai_model_env(value):
@@ -56,6 +62,9 @@ def set_ollama_model_env(value):
 def set_custom_model_env(value):
     os.environ["CUSTOM_MODEL"] = value
 
+def set_auzureopenai_model_env(value):
+    os.environ["AZUREOPENAI_MODEL"] = value
+
 
 def set_pexels_api_key_env(value):
     os.environ["PEXELS_API_KEY"] = value
@@ -87,3 +96,7 @@ def set_extended_reasoning_env(value):
 
 def set_web_grounding_env(value):
     os.environ["WEB_GROUNDING"] = value
+
+
+def set_azureopenai_api_version_env(value):
+    os.environ["AZUREOPENAI_API_VERSION"] = value

@@ -41,8 +41,16 @@ def get_custom_llm_url_env():
     return os.getenv("CUSTOM_LLM_URL")
 
 
+def get_azureopenai_url_env():
+    return os.getenv("AZUREOPENAI_URL")
+
+
 def get_openai_api_key_env():
     return os.getenv("OPENAI_API_KEY")
+
+
+def get_azureopenai_api_key_env():
+    return os.getenv("AZUREOPENAI_API_KEY")
 
 
 def get_openai_model_env():
@@ -67,6 +75,9 @@ def get_ollama_model_env():
 
 def get_custom_model_env():
     return os.getenv("CUSTOM_MODEL")
+
+def get_azureopenai_model_env():
+    return os.getenv("AZUREOPENAI_MODEL")
 
 
 def get_pexels_api_key_env():
@@ -99,3 +110,6 @@ def get_extended_reasoning_env():
 
 def get_web_grounding_env():
     return os.getenv("WEB_GROUNDING")
+
+def get_azureopenai_api_version_env():
+    return os.getenv("AZUREOPENAI_API_VERSION")

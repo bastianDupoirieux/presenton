@@ -24,6 +24,10 @@ from utils.get_env import (
     get_pixabay_api_key_env,
     get_extended_reasoning_env,
     get_web_grounding_env,
+    get_azureopenai_model_env,
+    get_azureopenai_api_key_env,
+    get_azureopenai_api_version_env,
+    get_azureopenai_url_env,
 )
 from utils.parsers import parse_bool_or_none
 from utils.set_env import (
@@ -47,6 +51,10 @@ from utils.set_env import (
     set_pixabay_api_key_env,
     set_tool_calls_env,
     set_web_grounding_env,
+    set_azureopenai_api_version_env,
+    set_azureopenai_api_key_env,
+    set_azureopenai_url_env,
+    set_auzureopenai_model_env,
 )
 
 
@@ -77,6 +85,10 @@ def get_user_config():
         CUSTOM_LLM_API_KEY=existing_config.CUSTOM_LLM_API_KEY
         or get_custom_llm_api_key_env(),
         CUSTOM_MODEL=existing_config.CUSTOM_MODEL or get_custom_model_env(),
+        AZUREOPENAI_API_KEY=existing_config.AZUREOPENAI_API_KEY or get_azureopenai_api_key_env(),
+        AZUREOPENAI_API_VERSION=existing_config.AZUREOPENAI_API_VERSION or get_azureopenai_api_version_env(),
+        AZUREOPENAI_MODEL=existing_config.AZUREOPENAI_MODEL or get_azureopenai_model_env(),
+        AZUREOPENAI_URL=existing_config.AZUREOPENAI_URL or get_azureopenai_url_env(),
         IMAGE_PROVIDER=existing_config.IMAGE_PROVIDER or get_image_provider_env(),
         DISABLE_IMAGE_GENERATION=(
             existing_config.DISABLE_IMAGE_GENERATION
@@ -134,6 +146,14 @@ def update_env_with_user_config():
         set_custom_llm_api_key_env(user_config.CUSTOM_LLM_API_KEY)
     if user_config.CUSTOM_MODEL:
         set_custom_model_env(user_config.CUSTOM_MODEL)
+    if user_config.AZUREOPENAI_URL:
+        set_azureopenai_url_env(user_config.AZUREOPENAI_URL)
+    if user_config.AZUREOPENAI_API_KEY:
+        set_azureopenai_api_key_env(user_config.AZUREOPENAI_API_KEY)
+    if user_config.AZUREOPENAI_API_VERSION:
+        set_azureopenai_api_version_env(user_config.AZUREOPENAI_API_VERSION)
+    if user_config.AZUREOPENAI_MODEL:
+        set_auzureopenai_model_env(user_config.AZUREOPENAI_MODEL)
     if user_config.DISABLE_IMAGE_GENERATION is not None:
         set_disable_image_generation_env(str(user_config.DISABLE_IMAGE_GENERATION))
     if user_config.IMAGE_PROVIDER:
