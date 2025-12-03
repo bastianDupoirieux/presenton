@@ -5,7 +5,7 @@ from utils.available_models import list_available_azureopenai_compatible_models
 from utils.get_env import get_azureopenai_api_version_env
 
 api_version = get_azureopenai_api_version_env()
-AZUREOPENAI_ROUTER = APIRouter(prefix="/openai", tags=["OpenAI"])
+AZUREOPENAI_ROUTER = APIRouter(prefix="/azureopenai", tags=["AzureOpenAI"])
 
 
 @AZUREOPENAI_ROUTER.post(f"/models/available?api-version={api_version}", response_model=List[str])
