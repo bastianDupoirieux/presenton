@@ -1,7 +1,7 @@
 from typing import Annotated, List
 from fastapi import APIRouter, Body, HTTPException
 
-from utils.available_models import list_available_azureopenai_compatible_models
+from utils.available_models import list_available_azure_openai_models
 from utils.get_env import get_azureopenai_api_version_env
 
 api_version = get_azureopenai_api_version_env()
@@ -14,6 +14,6 @@ async def get_available_models(
     api_key: Annotated[str, Body()],
 ):
     try:
-        return await list_available_azureopenai_compatible_models(url, api_key)
+        return await list_available_azure_openai_models(url, api_key)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
