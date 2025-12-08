@@ -125,7 +125,7 @@ async def check_llm_and_image_provider_api_or_model_availability():
             )
             print("-" * 50)
             print("Available models:", available_models)
-            if azure_openai_model not in available_models:
+            if azure_openai_model not in [model[:len(azure_openai_model)] for model in available_models]:
                 raise Exception(f"Model {azure_openai_model} is not available")
 
         # Skip image provider and API key checks if image generation is disabled
