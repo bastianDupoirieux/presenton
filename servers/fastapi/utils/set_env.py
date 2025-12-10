@@ -100,3 +100,6 @@ def set_web_grounding_env(value):
 
 def set_azureopenai_api_version_env(value):
     os.environ["AZUREOPENAI_API_VERSION"] = value
+
+def set_azureopenai_deployment_env(value):
+    os.environ["AZUREOPENAI_DEPLOYMENT"] = value

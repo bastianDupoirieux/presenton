@@ -43,6 +43,7 @@ export const updateLLMConfig = (
     azureopenai_api_version: "AZUREOPENAI_API_VERSION",
     azureopenai_api_key: "AZUREOPENAI_API_KEY",
     azureopenai_model: "AZUREOPENAI_MODEL",
+    azureopenai_deployment: "AZUREOPENAI_DEPLOYMENT",
     pexels_api_key: "PEXELS_API_KEY",
     pixabay_api_key: "PIXABAY_API_KEY",
     image_provider: "IMAGE_PROVIDER",

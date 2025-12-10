@@ -14,6 +14,7 @@ from utils.get_env import (
     get_ollama_model_env,
     get_openai_model_env,
     get_azureopenai_model_env,
+    get_azureopenai_deployment_env,
 )
 
 
@@ -63,7 +64,7 @@ def get_model():
     elif selected_llm == LLMProvider.CUSTOM:
         return get_custom_model_env()
     elif selected_llm == LLMProvider.AZUREOPENAI:
-        return get_azureopenai_model_env()
+        return get_azureopenai_deployment_env()
     else:
         raise HTTPException(
             status_code=500,

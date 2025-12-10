@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Roboto, Instrument_Sans } from "next/font/google";
+import {  Instrument_Sans } from "next/font/google"; //Excluded Roboto, because build fails
 import "./globals.css";
 import { Providers } from "./providers";
 import MixpanelInitializer from "./MixpanelInitializer";
@@ -23,11 +23,11 @@ const instrument_sans = Instrument_Sans({
   variable: "--font-instrument-sans",
 });
 
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-roboto",
-});
+//const roboto = Roboto({
+//  subsets: ["latin"],
+//  weight: ["400"],
+//  variable: "--font-roboto",
+//});
 
 
 export const metadata: Metadata = {
@@ -83,7 +83,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${roboto.variable} ${instrument_sans.variable} antialiased`}
+        className={`${inter.variable}  ${instrument_sans.variable} antialiased`} // excluded ${roboto.variable} because build fails
       >
         <Providers>
           <MixpanelInitializer>

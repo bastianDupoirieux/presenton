@@ -27,6 +27,7 @@ export interface LLMConfig {
   AZUREOPENAI_API_VERSION?: string;
   AZUREOPENAI_API_KEY?: string;
   AZUREOPENAI_MODEL?: string;
+  AZUREOPENAI_DEPLOYMENT?: string;
 
   // Image providers
   DISABLE_IMAGE_GENERATION?: boolean;

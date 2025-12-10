@@ -31,6 +31,7 @@ class UserConfig(BaseModel):
     AZUREOPENAI_API_VERSION: Optional[str] = None
     AZUREOPENAI_API_KEY: Optional[str] = None
     AZUREOPENAI_MODEL: Optional[str] = None
+    AZUREOPENAI_DEPLOYMENT: Optional[str] = None
 
     # Image Provider
     DISABLE_IMAGE_GENERATION: Optional[bool] = None

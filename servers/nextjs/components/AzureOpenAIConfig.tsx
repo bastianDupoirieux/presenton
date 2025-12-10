@@ -20,6 +20,7 @@ interface AzureOpenAiConfigProps {
   AzureOpenAiApiKey: string;
   AzureOpenAiModel: string;
   AzureOpenAiApiVersion: string;
+  AzureOpenAiDeployment: string;
   toolCalls: boolean;
   disableThinking: boolean;
   onInputChange: (value: string | boolean, field: string) => void;
@@ -30,6 +31,7 @@ export default function AzureOpenAiConfig({
   AzureOpenAiApiKey,
   AzureOpenAiModel,
   AzureOpenAiApiVersion,
+  AzureOpenAiDeployment,
   toolCalls,
   disableThinking,
   onInputChange,
@@ -41,6 +43,7 @@ export default function AzureOpenAiConfig({
   const [url, setUrl] = useState(AzureOpenAiUrl);
   const [apiKey, setApiKey] = useState(AzureOpenAiApiKey);
   const [apiVersion, setApiVersion] = useState(AzureOpenAiApiVersion);
+  const [deployment, setDeployment] = useState(AzureOpenAiDeployment);
 
   useEffect(() => {
     setAzureOpenAiModels([]);

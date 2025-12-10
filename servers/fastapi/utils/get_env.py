@@ -113,3 +113,6 @@ def get_web_grounding_env():
 
 def get_azureopenai_api_version_env():
     return os.getenv("AZUREOPENAI_API_VERSION")
+
+def get_azureopenai_deployment_env():
+    return os.getenv("AZUREOPENAI_DEPLOYMENT")

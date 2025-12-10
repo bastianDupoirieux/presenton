@@ -64,7 +64,9 @@ export const hasValidLLMConfig = (llmConfig: LLMConfig) => {
     llmConfig.AZUREOPENAI_URL !== undefined &&
     llmConfig.AZUREOPENAI_MODEL !== "" &&
     llmConfig.AZUREOPENAI_MODEL !== null &&
-    llmConfig.AZUREOPENAI_MODEL !== undefined;
+    llmConfig.AZUREOPENAI_MODEL !== undefined
+    llmConfig.AZUREOPENAI_DEPLOYMENT !== null &&
+    llmConfig.AZUREOPENAI_DEPLOYMENT !== undefined;
 
   const shouldValidateImages = !llmConfig.DISABLE_IMAGE_GENERATION;
 

@@ -28,6 +28,7 @@ from utils.get_env import (
     get_azureopenai_api_key_env,
     get_azureopenai_api_version_env,
     get_azureopenai_url_env,
+    get_azureopenai_deployment_env,
 )
 from utils.parsers import parse_bool_or_none
 from utils.set_env import (
@@ -55,6 +56,7 @@ from utils.set_env import (
     set_azureopenai_api_key_env,
     set_azureopenai_url_env,
     set_auzureopenai_model_env,
+    set_azureopenai_deployment_env,
 )
 
 
@@ -89,6 +91,7 @@ def get_user_config():
         AZUREOPENAI_API_VERSION=existing_config.AZUREOPENAI_API_VERSION or get_azureopenai_api_version_env(),
         AZUREOPENAI_MODEL=existing_config.AZUREOPENAI_MODEL or get_azureopenai_model_env(),
         AZUREOPENAI_URL=existing_config.AZUREOPENAI_URL or get_azureopenai_url_env(),
+        AZUREOPENAI_DEPLOYMENT=existing_config.AZUREOPENAI_DEPLOYMENT or get_azureopenai_deployment_env(),
         IMAGE_PROVIDER=existing_config.IMAGE_PROVIDER or get_image_provider_env(),
         DISABLE_IMAGE_GENERATION=(
             existing_config.DISABLE_IMAGE_GENERATION
@@ -154,6 +157,8 @@ def update_env_with_user_config():
         set_azureopenai_api_version_env(user_config.AZUREOPENAI_API_VERSION)
     if user_config.AZUREOPENAI_MODEL:
         set_auzureopenai_model_env(user_config.AZUREOPENAI_MODEL)
+    if user_config.AZUREOPENAI_DEPLOYMENT:
+        set_azureopenai_deployment_env(user_config.AZUREOPENAI_DEPLOYMENT)
     if user_config.DISABLE_IMAGE_GENERATION is not None:
         set_disable_image_generation_env(str(user_config.DISABLE_IMAGE_GENERATION))
     if user_config.IMAGE_PROVIDER:
