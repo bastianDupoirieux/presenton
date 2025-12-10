@@ -13,6 +13,8 @@ from utils.get_env import (
     get_llm_provider_env,
     get_ollama_model_env,
     get_openai_model_env,
+    get_azureopenai_model_env,
+    get_azureopenai_deployment_env,
 )
 
 
@@ -22,7 +24,7 @@ def get_llm_provider():
     except:
         raise HTTPException(
             status_code=500,
-            detail=f"Invalid LLM provider. Please select one of: openai, google, anthropic, ollama, custom",
+            detail=f"Invalid LLM provider. Please select one of: openai, google, anthropic, ollama, custom, azureopenai",
         )
 
 
@@ -45,6 +47,9 @@ def is_ollama_selected():
 def is_custom_llm_selected():
     return get_llm_provider() == LLMProvider.CUSTOM
 
+def is_azure_openai_selected():
+    return get_llm_provider() == LLMProvider.AZUREOPENAI
+
 
 def get_model():
     selected_llm = get_llm_provider()
@@ -58,8 +63,10 @@ def get_model():
         return get_ollama_model_env()
     elif selected_llm == LLMProvider.CUSTOM:
         return get_custom_model_env()
+    elif selected_llm == LLMProvider.AZUREOPENAI:
+        return get_azureopenai_deployment_env()
     else:
         raise HTTPException(
             status_code=500,
-            detail=f"Invalid LLM provider. Please select one of: openai, google, anthropic, ollama, custom",
+            detail=f"Invalid LLM provider. Please select one of: openai, google, anthropic, ollama, custom, azureopenai",
         )

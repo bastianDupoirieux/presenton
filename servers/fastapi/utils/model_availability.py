@@ -6,6 +6,7 @@ from utils.available_models import (
     list_available_anthropic_models,
     list_available_google_models,
     list_available_openai_compatible_models,
+    list_available_azure_openai_models,
 )
 from utils.get_env import (
     get_anthropic_api_key_env,
@@ -22,10 +23,15 @@ from utils.get_env import get_ollama_model_env
 from utils.get_env import get_custom_llm_api_key_env
 from utils.get_env import get_custom_llm_url_env
 from utils.get_env import get_custom_model_env
+from utils.get_env import get_azureopenai_api_version_env
+from utils.get_env import get_azureopenai_model_env
+from utils.get_env import get_azureopenai_url_env
+from utils.get_env import get_azureopenai_api_key_env
 from utils.llm_provider import (
     get_llm_provider,
     is_custom_llm_selected,
     is_ollama_selected,
+    is_azure_openai_selected,
 )
 from utils.ollama import pull_ollama_model
 from utils.image_provider import (
@@ -106,6 +112,21 @@ async def check_llm_and_image_provider_api_or_model_availability():
             print("Available models: ", available_models)
             if custom_model not in available_models:
                 raise Exception(f"Model {custom_model} is not available")
+        elif is_azure_openai_selected():
+            azure_openai_model = get_azureopenai_model_env()
+            azure_openai_url = get_azureopenai_url_env()
+            if not azure_openai_model:
+                raise Exception("AZUREOPENAI_MODEL must be provided")
+            if not azure_openai_url:
+                raise Exception("AZUREOPENAI_URL must be provided")
+            available_models = await list_available_azure_openai_models(
+                azure_openai_url, get_azureopenai_api_key_env(),
+                get_azureopenai_api_version_env()
+            )
+            print("-" * 50)
+            print("Available models:", available_models)
+            if azure_openai_model not in available_models:
+                raise Exception(f"Model {azure_openai_model} is not available")
 
         # Skip image provider and API key checks if image generation is disabled
         if is_image_generation_disabled():

@@ -58,6 +58,16 @@ export const hasValidLLMConfig = (llmConfig: LLMConfig) => {
     llmConfig.CUSTOM_MODEL !== null &&
     llmConfig.CUSTOM_MODEL !== undefined;
 
+  const isAzureOpenAIConfigValid = 
+    llmConfig.AZUREOPENAI_URL !== "" &&
+    llmConfig.AZUREOPENAI_URL !== null &&
+    llmConfig.AZUREOPENAI_URL !== undefined &&
+    llmConfig.AZUREOPENAI_MODEL !== "" &&
+    llmConfig.AZUREOPENAI_MODEL !== null &&
+    llmConfig.AZUREOPENAI_MODEL !== undefined
+    llmConfig.AZUREOPENAI_DEPLOYMENT !== null &&
+    llmConfig.AZUREOPENAI_DEPLOYMENT !== undefined;
+
   const shouldValidateImages = !llmConfig.DISABLE_IMAGE_GENERATION;
 
   const isImageConfigValid = () => {
@@ -89,6 +99,8 @@ export const hasValidLLMConfig = (llmConfig: LLMConfig) => {
             ? isOllamaConfigValid
             : llmConfig.LLM === "custom"
               ? isCustomConfigValid
+              : llmConfig.LLM === "azureopenai"
+                ? isAzureOpenAIConfigValid
               : false;
 
   return isLLMConfigValid && isImageConfigValid();

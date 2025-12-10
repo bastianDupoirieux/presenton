@@ -51,7 +51,10 @@ async def process_slide_and_fetch_assets(
 
     for icon_path in icon_paths:
         icon_dict = get_dict_at_path(slide.content, icon_path)
-        icon_dict["__icon_url__"] = results.pop()[0]
+        try: #When image generation is turned off, there seems to be an issue with querying the icons too, leading to index errors.
+            icon_dict["__icon_url__"] = results.pop()[0]
+        except IndexError:
+            pass
         set_dict_at_path(slide.content, icon_path, icon_dict)
 
     return return_assets

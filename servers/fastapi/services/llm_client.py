@@ -3,7 +3,7 @@ import dirtyjson
 import json
 from typing import AsyncGenerator, List, Optional
 from fastapi import HTTPException
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, AsyncAzureOpenAI
 from openai.types.chat.chat_completion_chunk import (
     ChatCompletionChunk as OpenAIChatCompletionChunk,
 )
@@ -46,6 +46,9 @@ from utils.get_env import (
     get_anthropic_api_key_env,
     get_custom_llm_api_key_env,
     get_custom_llm_url_env,
+    get_azureopenai_api_key_env,
+    get_azureopenai_api_version_env,
+    get_azureopenai_url_env,
     get_disable_thinking_env,
     get_google_api_key_env,
     get_ollama_url_env,
@@ -79,6 +82,7 @@ class LLMClient:
         if (
             self.llm_provider == LLMProvider.OLLAMA
             or self.llm_provider == LLMProvider.CUSTOM
+            or self.llm_provider == LLMProvider.AZUREOPENAI
         ):
             return False
         return parse_bool_or_none(get_web_grounding_env()) or False
@@ -100,6 +104,8 @@ class LLMClient:
                 return self._get_ollama_client()
             case LLMProvider.CUSTOM:
                 return self._get_custom_client()
+            case LLMProvider.AZUREOPENAI:
+                return self._get_azureopenai_client()
             case _:
                 raise HTTPException(
                     status_code=400,
@@ -146,6 +152,29 @@ class LLMClient:
             base_url=get_custom_llm_url_env(),
             api_key=get_custom_llm_api_key_env() or "null",
         )
+    
+    def _get_azureopenai_client(self):
+        if not get_azureopenai_url_env():
+            raise HTTPException(
+                status_code="400",
+                detail="Azure OpenAI URL is not set",
+            )
+        if not get_azureopenai_api_version_env():
+            raise HTTPException(
+                status_code="400",
+                detail="Azure OpenAI API Version is not set",
+            )
+        if not get_azureopenai_api_key_env():
+            raise HTTPException(
+                status_code="400",
+                detail="Azure OpenAI API Key is not set",
+            )
+        return AsyncAzureOpenAI(
+            api_key=get_azureopenai_api_key_env(),
+            base_url=get_azureopenai_url_env(),
+            api_version=get_azureopenai_api_version_env()
+        )
+
 
     # ? Prompts
     def _get_system_prompt(self, messages: List[LLMMessage]) -> str:
@@ -196,7 +225,7 @@ class LLMClient:
         extra_body: Optional[dict] = None,
         depth: int = 0,
     ) -> str | None:
-        client: AsyncOpenAI = self._client
+        client: AsyncOpenAI | AsyncAzureOpenAI = self._client
         response = await client.chat.completions.create(
             model=model,
             messages=[message.model_dump() for message in messages],
@@ -419,6 +448,13 @@ class LLMClient:
                     max_tokens=max_tokens,
                     tools=parsed_tools,
                 )
+            case LLMProvider.AZUREOPENAI:
+                content = await self._generate_openai(
+                    model=model,
+                    messages=messages,
+                    max_tokens=max_tokens,
+                    tools=parsed_tools,
+                )
             case LLMProvider.GOOGLE:
                 content = await self._generate_google(
                     model=model,
@@ -460,7 +496,7 @@ class LLMClient:
         extra_body: Optional[dict] = None,
         depth: int = 0,
     ) -> dict | None:
-        client: AsyncOpenAI = self._client
+        client: AsyncOpenAI | AsyncAzureOpenAI = self._client
         response_schema = response_format
         all_tools = [*tools] if tools else None
 
@@ -795,6 +831,15 @@ class LLMClient:
                     tools=parsed_tools,
                     max_tokens=max_tokens,
                 )
+            case LLMProvider.AZUREOPENAI:
+                content = await self._generate_openai_structured(
+                    model=model,
+                    messages=messages,
+                    response_format=response_format,
+                    strict=strict,
+                    tools=parsed_tools,
+                    max_tokens=max_tokens,
+                )
             case LLMProvider.GOOGLE:
                 content = await self._generate_google_structured(
                     model=model,
@@ -844,7 +889,7 @@ class LLMClient:
         extra_body: Optional[dict] = None,
         depth: int = 0,
     ) -> AsyncGenerator[str, None]:
-        client: AsyncOpenAI = self._client
+        client: AsyncOpenAI | AsyncAzureOpenAI = self._client
 
         tool_calls: List[LLMToolCall] = []
         current_index = 0
@@ -1112,6 +1157,13 @@ class LLMClient:
                     max_tokens=max_tokens,
                     tools=parsed_tools,
                 )
+            case LLMProvider.AZUREOPENAI:
+                return self._stream_openai(
+                    model=model,
+                    messages=messages,
+                    max_tokens=max_tokens,
+                    tools=parsed_tools,
+                )
             case LLMProvider.GOOGLE:
                 return self._stream_google(
                     model=model,
@@ -1147,7 +1199,7 @@ class LLMClient:
         extra_body: Optional[dict] = None,
         depth: int = 0,
     ) -> AsyncGenerator[str, None]:
-        client: AsyncOpenAI = self._client
+        client: AsyncOpenAI | AsyncAzureOpenAI = self._client
 
         response_schema = response_format
         all_tools = [*tools] if tools else None
@@ -1538,6 +1590,15 @@ class LLMClient:
                     tools=parsed_tools,
                     max_tokens=max_tokens,
                 )
+            case LLMProvider.AZUREOPENAI:
+                return self._stream_openai_structured(
+                    model=model,
+                    messages=messages,
+                    response_format=response_format,
+                    strict=strict,
+                    tools=parsed_tools,
+                    max_tokens=max_tokens,
+                )
             case LLMProvider.GOOGLE:
                 return self._stream_google_structured(
                     model=model,
@@ -1573,7 +1634,7 @@ class LLMClient:
 
     # ? Web search
     async def _search_openai(self, query: str) -> str:
-        client: AsyncOpenAI = self._client
+        client: AsyncOpenAI | AsyncAzureOpenAI = self._client
         response = await client.responses.create(
             model=get_model(),
             tools=[
